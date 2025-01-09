@@ -1,0 +1,16 @@
+Score: 130, Total Reward: -1369.100000000008, Epsilon: 1.0, Won: False
+Score: 140, Total Reward: -1071.7000000000032, Epsilon: 0.999, Won: False
+Score: 125, Total Reward: -1282.2000000000132, Epsilon: 0.998001, Won: False
+Score: 165, Total Reward: -1041.4999999999816, Epsilon: 0.997002999, Won: False
+Score: 145, Total Reward: -1133.5999999999817, Epsilon: 0.996005996001, Won: False
+Score: 10, Total Reward: -1117.9999999999977, Epsilon: 0.995009990004999, Won: False
+Score: 105, Total Reward: -891.1999999999947, Epsilon: 0.994014980014994, Won: False
+Score: 115, Total Reward: -1364.2000000000141, Epsilon: 0.993020965034979, Won: False
+Score: 30, Total Reward: -1166.3999999999933, Epsilon: 0.9920279440699441, Won: False
+Score: 25, Total Reward: -1454.7000000000323, Epsilon: 0.9910359161258742, Won: False
+Score: 95, Total Reward: -1284.099999999998, Epsilon: 0.9900448802097482, Won: False
+Score: 115, Total Reward: -1243.899999999989, Epsilon: 0.9890548353295385, Won: False
+Score: 135, Total Reward: -935.9999999999972, Epsilon: 0.988065780494209, Won: False
+Score: 380, Total Reward: 4122.799999999989, Epsilon: 0.9870777147137147, Won: True
+Score: 95, Total Reward: -1364.3000000000343, Epsilon: 0.986090636999001, Won: False
+Score: 100, Total Reward: -826.8999999999977, Epsilon: 0.9851045463620021, Won: False
