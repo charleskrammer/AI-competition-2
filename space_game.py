@@ -9,6 +9,8 @@ from brain_interface import SpaceshipBrain, Action, GameState
 import matplotlib.pyplot as plt  # Import matplotlib for plotting
 import numpy as np  # Import numpy for numerical operations
 from helpers import cached_hypot
+from brains.perso import GeneticHunterBrain
+import json
 
 SPECIFIC_BRAINS_TO_RUN = [] #['Q-Learner', 'Defensive']
 # Constants
@@ -927,8 +929,82 @@ def main(training_mode=False, num_games=1):
     if not training_mode:
         pygame.quit()
 
+class GeneticAlgorithm:
+    def __init__(self, population_size=10, mutation_rate=0.1, generations=3):
+        self.population_size = population_size
+        self.mutation_rate = mutation_rate
+        self.generations = generations
+        self.population = [GeneticHunterBrain() for _ in range(population_size)]
+
+    def evolve(self, environment, num_games_per_individual):
+        for generation in range(self.generations):
+            print(f"Generation {generation + 1}/{self.generations}")
+            fitness_scores = []
+
+            # Jouer des parties pour chaque individu
+            for brain in self.population:
+                total_score = 0
+                for _ in range(num_games_per_individual):
+                    game = SpaceGame(environment, wins_per_brain={})
+                    winner = game.run()
+                    if winner and winner.id == brain.id:
+                        total_score += winner.score
+                fitness_scores.append((brain, total_score))
+
+            # Trier par fitness (score total décroissant)
+            fitness_scores.sort(key=lambda x: x[1], reverse=True)
+
+            # Afficher le meilleur score de la génération
+            best_brain, best_score = fitness_scores[0]
+            print(f"Best score in generation {generation + 1}: {best_score}")
+
+            # Sélection des meilleurs (50%)
+            selected = [brain for brain, _ in fitness_scores[: len(fitness_scores) // 2]]
+
+            # Reproduction et mutation
+            new_population = []
+            while len(new_population) < self.population_size:
+                parent1 = random.choice(selected)
+                parent2 = random.choice(selected)
+                child_params = self.crossover(parent1.params, parent2.params)
+                self.mutate(child_params)
+                new_population.append(GeneticHunterBrain(params=child_params))
+
+            self.population = new_population
+
+        # Retourner le meilleur brain après toutes les générations
+        return best_brain
+
+    @staticmethod
+    def crossover(params1, params2):
+        # Mélanger les paramètres des deux parents
+        return {key: random.choice([params1[key], params2[key]]) for key in params1}
+
+    def mutate(self, params):
+        # Appliquer une mutation aléatoire aux paramètres
+        for key in params:
+            if random.random() < self.mutation_rate:
+                params[key] += random.uniform(-0.1, 0.1)  # Modifier légèrement le paramètre
+                params[key] = max(0, min(1, params[key]))  # Restreindre entre 0 et 1 si nécessaire
+
+# Ajoutez une fonction principale dédiée à l'entraînement
+def train_genetic_brain():
+    print("Starting training for GeneticHunterBrain...")
+    environment = GameEnvironment(training_mode=True)
+    genetic_algorithm = GeneticAlgorithm(population_size=10, mutation_rate=0.1, generations=3)
+    best_brain = genetic_algorithm.evolve(environment, num_games_per_individual=5)
+
+    # Sauvegarder le meilleur brain après l'entraînement
+    if best_brain and best_brain.params:
+        with open("best_brain_params.json", "w") as f:
+            json.dump(best_brain.params, f)
+        print("Best brain parameters saved to 'best_brain_params.json'.")
+    else:
+        print("No best brain found or parameters are empty. Skipping save.")
+
 if __name__ == "__main__":
-    num_games = 1
     if TRAINING_MODE:
-        num_games = TRAINING_MODE_GAMES
-    main(training_mode=TRAINING_MODE, num_games=num_games)
+        train_genetic_brain()
+    else:
+        num_games = 1
+        main(training_mode=TRAINING_MODE, num_games=num_games)
