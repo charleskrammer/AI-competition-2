@@ -3,7 +3,7 @@ import random
 import math
 from space_game import SpaceGame, GameEnvironment
 from helpers import GameEngine
-from brains.perso import GeneticHunterBrain
+from brains.Group1_CharlesK import GeneticHunterBrain
 
 class GeneticAlgorithm:
     def __init__(
@@ -49,7 +49,7 @@ class GeneticAlgorithm:
                 best_brain = current_best_brain
                 best_score = current_best_score
 
-            print(f" => Best brain of Gen {generation+1} = {current_best_brain.id} | Fitness = {current_best_score:.2f}")
+            print(f" => Best brain of Gen {generation+1} = {current_best_brain} | Fitness = {current_best_score:.2f}")
 
             # (3) Selection (keep the elite + some others)
             selected_brains = [b for (b, _) in fitness_scores[: self.elite_size]]

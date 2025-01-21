@@ -14,7 +14,7 @@ GAMES_PER_INDIVIDUAL = 3
 ###################
 def genetic_training(population_size=100, generations=100, mutation_rate=0.1):
     """
-    Trains the 'GeneticHunterBrain' (perso.py) via 'space_game.py',
+    Trains the 'GeneticHunterBrain' (group1-CharlesK.py) via 'space_game.py',
     logs each individual (fitness, params) in a CSV file,
     and saves the best global individual in 'best_brain_params.json'.
     """
@@ -76,10 +76,10 @@ def genetic_training(population_size=100, generations=100, mutation_rate=0.1):
 ###################
 def evaluate_params(params, num_games):
     """
-    Injects 'params' into 'best_brain_params.json' so that perso.py uses them,
+    Injects 'params' into 'best_brain_params.json' so that group1-CharlesK.py uses them,
     plays 'num_games' games, and returns the average fitness (score + survival bonus).
     """
-    # (1) Temporarily write params for the 'Perso' brain
+    # (1) Temporarily write params for the 'CharlesK' brain
     with open("best_brain_params.json", "w") as f:
         json.dump(params, f)
 
@@ -89,8 +89,8 @@ def evaluate_params(params, num_games):
         game = SpaceGame(env, wins_per_brain={})
         winner = game.run()
 
-        # Retrieve the 'Perso' ship
-        ship_perso = next((s for s in game.ships if s.id == "Perso"), None)
+        # Retrieve the 'group1-CharlesK' ship
+        ship_perso = next((s for s in game.ships if s.id == "group1-CharlesK"), None)
         if not ship_perso:
             # If it does not exist, fitness is zero
             continue
